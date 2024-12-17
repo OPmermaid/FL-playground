@@ -1,4 +1,9 @@
 import flwr as fl
+import os
+from dotenv import load_dotenv
+
+# Get the path of the parent directory
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 strategy = fl.server.strategy.FedAvg(
     fraction_fit=1.0,
@@ -11,9 +16,19 @@ strategy = fl.server.strategy.FedAvg(
 
 # Start the Flower server with the custom strategy
 if __name__ == "__main__":
-    config = fl.server.ServerConfig(num_rounds=5)  # Use the ServerConfig class
+    # Load the .env file
+    load_dotenv(os.path.join(parent_dir, ".env"))
+
+    # Dynamically get the server IP
+    server_ip = os.getenv("SERVER_IP")
+    port = 8080
+
+    print(f"Flower server is starting...")
+    print(f"Connect clients using server IP: {server_ip}:{port}")
+
+    # Start the Flower server
     fl.server.start_server(
-        server_address="0.0.0.0:8080",  # Address/port for the server
-        strategy=strategy,  # Pass the strategy here
-        config=config,  # Pass the ServerConfig object
+        server_address=f"{server_ip}:{port}",  # Use dynamically determined IP
+        config=fl.server.ServerConfig(num_rounds=3),
+        strategy=strategy,
     )
