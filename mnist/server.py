@@ -11,7 +11,7 @@ strategy = fl.server.strategy.FedAvg(
     min_fit_clients=1,
     min_evaluate_clients=1,
     min_available_clients=1,
-    on_fit_config_fn=lambda rnd: {"epoch": 5, "batch_size": 32},
+    on_fit_config_fn=lambda rnd: {"epochs": 5, "batch_size": 32},
 )
 
 # Start the Flower server with the custom strategy
@@ -29,6 +29,6 @@ if __name__ == "__main__":
     # Start the Flower server
     fl.server.start_server(
         server_address=f"{server_ip}:{port}",  # Use dynamically determined IP
-        config=fl.server.ServerConfig(num_rounds=3),
+        config=fl.server.ServerConfig(num_rounds=5),
         strategy=strategy,
     )
