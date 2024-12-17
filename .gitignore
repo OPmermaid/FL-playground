@@ -1,0 +1,5 @@
+.venv
+
+mnist/data/*
+mnist/mnist/*
+mnist/main.ipynb
